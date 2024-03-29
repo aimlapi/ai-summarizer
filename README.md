@@ -1,7 +1,7 @@
 # AI Summarizer using AI/ML API
 
 ## Use
-Suited for generated summary of audio file with Deepgram API and AI/ML API
+Suited for generating a summary of an audio file with the Deepgram API and AI/ML API
 
 ### Requests
 `POST /summary` Returns a string with a summary based on the payload:
