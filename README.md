@@ -1,6 +1,8 @@
 # AI Summarizer using AI/ML API
 
 ## Use
+Get you AI/ML API Token today at https://aimlapi.com/
+
 Suited for generating a summary of an audio file with the Deepgram API and AI/ML API
 
 ### Requests
