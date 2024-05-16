@@ -3,7 +3,7 @@
 ## Use
 Get you AI/ML API Token today at https://aimlapi.com/
 
-Suited for generating a summary of an audio file with the Deepgram API and AI/ML API
+Suited for generating a summary of an audio file with the AI/ML API
 
 ### Requests
 `POST /summary` Returns a string with a summary based on the payload:
@@ -27,14 +27,14 @@ docker build . -t ai-summarizer
 ## Run
 Create a `.env` file in the root project folder with the following content:
 ```env
-# Your Deepgram API token
-DEEPGRAM_TOKEN=... 
 # AI/ML API host
 AIMLAPI_HOST=https://api.aimlapi.com
 # You can pass any LLM-based text-generative model from AI/ML API
 AIMLAPI_MODEL=meta-llama/Llama-2-70b-chat-hf 
 # Your AI/ML API token
 AIMLAPI_TOKEN=...
+# If used in Rapid API
+RAPID_SECRET=...
 # Port that will be used
 PORT=3000
 ```
