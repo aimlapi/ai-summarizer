@@ -29,12 +29,14 @@ Create a `.env` file in the root project folder with the following content:
 ```env
 # AI/ML API host
 AIMLAPI_HOST=https://api.aimlapi.com
-# You can pass any LLM-based text-generative model from AI/ML API
-AIMLAPI_MODEL=meta-llama/Llama-2-70b-chat-hf 
+# You can pass any LLM-based text-generative model from the AI/ML API
+AIMLAPI_LLM_MODEL=meta-llama/Llama-2-70b-chat-hf 
+# You can pass any speech-to-text model from the AI/ML API
+AIMLAPI_STT_MODEL=#g1_nova-2-general
 # Your AI/ML API token
 AIMLAPI_TOKEN=...
-# If used in Rapid API
-RAPID_SECRET=...
+# If the application is used in the Rapid API environment, pass the value from 'x-rapid-api-proxy-secret' header here or leave it empty
+RAPID_PROXY_SECRET=...
 # Port that will be used
 PORT=3000
 ```

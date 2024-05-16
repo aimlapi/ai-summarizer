@@ -12,13 +12,17 @@ export class AuthGuard implements CanActivate {
   constructor(private configService: ConfigService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const correctSecret = this.configService.get('RAPID_PROXY_SECRET');
+    if (!correctSecret) {
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest();
     const requestSecret = this.getProxySecret(request);
     if (!requestSecret) {
       throw new UnauthorizedException();
     }
 
-    const correctSecret = this.configService.getOrThrow('RAPID_PROXY_SECRET');
     if (correctSecret !== requestSecret) {
       throw new UnauthorizedException();
     }
