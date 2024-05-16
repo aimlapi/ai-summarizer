@@ -8,7 +8,12 @@ describe('AimlapiService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [AIMLAPIService],
-      imports: [ConfigModule],
+      imports: [
+        ConfigModule.forFeature(async () => ({
+          AIMLAPI_HOST: 'host',
+          AIMLAPI_TOKEN: 'token',
+        })),
+      ],
     }).compile();
 
     service = module.get<AIMLAPIService>(AIMLAPIService);
@@ -19,6 +24,6 @@ describe('AimlapiService', () => {
   });
 
   it('action should be exists', () => {
-    expect(service.mlaiApiGenerateSummary).toBeDefined();
+    expect(service.createContextCompletion).toBeDefined();
   });
 });

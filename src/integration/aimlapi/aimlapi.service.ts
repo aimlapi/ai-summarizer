@@ -1,37 +1,72 @@
-import OpenAI from 'openai';
+import axios, { Axios } from 'axios';
 
 import { Injectable } from '@nestjs/common';
-import { AIMLAPIGenerateSummaryDTO } from '../dto/aimlApiGenerateSummary.dto';
 import { ConfigService } from '@nestjs/config';
-import { getContextPrompt, getSummaryPrompt } from '../../common/prompt';
+
+import { CreateContextCompletionDTO } from '../dto/createContextCompletion.dto';
+import { CreateSpeechToTextTranscriptionDTO } from '../dto/createSpeechToTextTranscription.dto';
 
 @Injectable()
 export class AIMLAPIService {
-  constructor(private configService: ConfigService) {}
-
-  async mlaiApiGenerateSummary(payload: AIMLAPIGenerateSummaryDTO) {
-    const host = this.configService.getOrThrow('AIMLAPI_HOST');
-    const model = this.configService.getOrThrow('AIMLAPI_MODEL');
+  api: Axios;
+  constructor(private configService: ConfigService) {
     const token = this.configService.getOrThrow('AIMLAPI_TOKEN');
-    const openai = new OpenAI({ apiKey: token, baseURL: host });
+    const baseURL = this.configService.getOrThrow('AIMLAPI_HOST');
+    this.api = axios.create({
+      baseURL,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
 
-    let completions = await openai.chat.completions.create({
+  async createContextCompletion(payload: CreateContextCompletionDTO) {
+    const { model, content, contextPrompt, summarizePrompt } = payload;
+
+    const { data: summarizedCompletion } = await this.api.post(
+      '/chat/completions',
+      {
+        model: payload.model,
+        messages: [
+          { role: 'system', content: summarizePrompt },
+          { role: 'user', content },
+        ],
+      },
+    );
+    const { data: contextedCompletion } = await this.api.post(
+      '/chat/completions',
+      {
+        model,
+        messages: [
+          { role: 'system', content: contextPrompt },
+          {
+            role: 'user',
+            content: summarizedCompletion.choices[0].message.content,
+          },
+        ],
+      },
+    );
+
+    return contextedCompletion.choices[0].message.content as string;
+  }
+
+  async createSpeechToTextTranscription(
+    payload: CreateSpeechToTextTranscriptionDTO,
+  ) {
+    const { url, model } = payload;
+    const {
+      data: {
+        results: {
+          channels: [
+            {
+              alternatives: [{ transcript }],
+            },
+          ],
+        },
+      },
+    } = await this.api.post('/stt', {
       model,
-      messages: [
-        { role: 'system', content: getSummaryPrompt() },
-        { role: 'user', content: payload.transcribed },
-      ],
+      url,
     });
 
-    const message = completions.choices[0].message.content;
-    completions = await openai.chat.completions.create({
-      model,
-      messages: [
-        { role: 'system', content: getContextPrompt(payload.type) },
-        { role: 'user', content: message },
-      ],
-    });
-
-    return completions.choices[0].message.content;
+    return transcript as string;
   }
 }
