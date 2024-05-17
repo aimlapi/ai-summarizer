@@ -7,4 +7,10 @@ export class GenerateSummaryDTO {
   @IsString()
   @MaxLength(30)
   type: string;
+
+  @IsString()
+  llmModel: string;
+
+  @IsString()
+  sttModel: string;
 }

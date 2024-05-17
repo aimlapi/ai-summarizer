@@ -1,0 +1,14 @@
+version: '3.3'
+
+name: rapid
+
+services:
+  rapid-ai-summarizer:
+    restart: unless-stopped
+    image: ghcr.io/aimlapi/ai-summarizer:latest
+    environment:
+      AIMLAPI_HOST: https://api.aimlapi.com
+      PORT: 3000
+      RAPID_PROXY_SECRET:
+    ports:
+      - '5001:3000'
