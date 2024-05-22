@@ -4,13 +4,15 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   Post,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { GenerateSummaryDTO } from './integration/dto/generateSummary.dto';
+
 import { IntegrationService } from './integration/integration.service';
 import { AuthGuard } from './auth/auth.guard';
+import { CreateSummaryDTO } from './integration/dto/createSummary.dto';
 
 @Controller()
 export class AppController {
@@ -18,10 +20,16 @@ export class AppController {
 
   @UseGuards(AuthGuard)
   @Post('/summary')
-  async generateSummary(@Body() payload: GenerateSummaryDTO) {
+  async generateSummary(
+    @Body() payload: CreateSummaryDTO,
+    @Headers('x-aimlapi-token') token: string,
+  ) {
     try {
       return {
-        summary: await this.integrationService.generateSummary(payload),
+        summary: await this.integrationService.generateSummary({
+          ...payload,
+          token,
+        }),
       };
     } catch (error) {
       if (isAxiosError(error)) {

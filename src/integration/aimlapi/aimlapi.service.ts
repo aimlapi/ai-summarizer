@@ -10,11 +10,9 @@ import { CreateSpeechToTextTranscriptionDTO } from '../dto/createSpeechToTextTra
 export class AIMLAPIService {
   api: Axios;
   constructor(private configService: ConfigService) {
-    const token = this.configService.getOrThrow('AIMLAPI_TOKEN');
     const baseURL = this.configService.getOrThrow('AIMLAPI_HOST');
     this.api = axios.create({
       baseURL,
-      headers: { Authorization: `Bearer ${token}` },
     });
   }
 

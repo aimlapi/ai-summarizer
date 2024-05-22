@@ -24,6 +24,7 @@ export class IntegrationService {
     this.logger.log(`Creating summary from '${payload.sttModel}'..`);
     const summarized = await this.aimlapiService.createContextCompletion({
       model: payload.llmModel,
+      token: payload.token,
       content: transcribed,
       contextPrompt,
       summarizePrompt,

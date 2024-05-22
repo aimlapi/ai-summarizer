@@ -1,7 +1,6 @@
 import { IsString, IsUrl, MaxLength } from 'class-validator';
-import { CreateSummaryDTO } from './createSummary.dto';
 
-export class GenerateSummaryDTO extends CreateSummaryDTO {
+export class CreateSummaryDTO {
   @IsUrl()
   url: string;
 
@@ -14,7 +13,4 @@ export class GenerateSummaryDTO extends CreateSummaryDTO {
 
   @IsString()
   sttModel: string;
-
-  @IsString()
-  token: string;
 }

@@ -12,4 +12,7 @@ export class CreateContextCompletionDTO {
 
   @IsString()
   contextPrompt: string;
+
+  @IsString()
+  token: string;
 }
