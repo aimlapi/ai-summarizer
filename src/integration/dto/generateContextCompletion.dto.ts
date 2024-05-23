@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class CreateContextCompletionDTO {
+export class GenerateContextCompletionDTO {
   @IsString()
   content: string;
 

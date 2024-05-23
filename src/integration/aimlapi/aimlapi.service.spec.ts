@@ -24,6 +24,9 @@ describe('AimlapiService', () => {
   });
 
   it('action should be exists', () => {
-    expect(service.createContextCompletion).toBeDefined();
+    expect(service.generateContextCompletion).toBeDefined();
+    expect(service.generateCompletion).toBeDefined();
+    expect(service.generateImage).toBeDefined();
+    expect(service.generateSpeechToTextTranscription).toBeDefined();
   });
 });
